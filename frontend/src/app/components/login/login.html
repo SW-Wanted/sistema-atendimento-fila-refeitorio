@@ -1,0 +1,40 @@
+<div class="login-page">
+  <section class="login-hero">
+    <div class="hero-badge">Sistema inteligente</div>
+    <h1>Refeitório com pedido digital, cozinha em tempo real e gestão operacional.</h1>
+    <p>
+      O fluxo foi desenhado para reduzir fila, acelerar retirada e dar visibilidade ao estado dos pedidos.
+    </p>
+
+    <div class="hero-points">
+      <span>Token único por pedido</span>
+      <span>Saldo pré-pago</span>
+      <span>Painel da cozinha</span>
+      <span>Dashboard do gestor</span>
+    </div>
+  </section>
+
+  <section class="login-card card">
+    <img src="assets/logo.png" alt="ISPTEC" class="logo">
+    <h2>Entrar no sistema</h2>
+    <p>Use a sua conta institucional, guest, operador ou admin.</p>
+
+    @if (erro) {
+      <div class="alert-error">{{ erro }}</div>
+    }
+
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input id="email" type="email" [(ngModel)]="email" placeholder="exemplo@isptec.co.ao">
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <input id="senha" type="password" [(ngModel)]="senha" (keyup.enter)="fazerLogin()">
+    </div>
+
+    <button class="btn-primary login-button" [disabled]="loading" (click)="fazerLogin()">
+      {{ loading ? 'A entrar...' : 'Entrar' }}
+    </button>
+  </section>
+</div>

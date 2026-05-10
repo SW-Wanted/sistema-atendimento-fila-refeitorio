@@ -1,0 +1,128 @@
+<div class="menu-hero container">
+  <div class="menu-hero-copy">
+    <span class="eyebrow">Pedido inteligente</span>
+    <h1>Olá, {{ user?.nome }}. O menu de hoje está pronto para pedir.</h1>
+    <p>
+      Escolha uma refeição, confirme o pagamento e acompanhe o seu token sem depender de filas físicas.
+    </p>
+  </div>
+
+  <div class="menu-summary card">
+    <div>
+      <span class="summary-label">Saldo disponível</span>
+      <strong>{{ user?.saldo | currency:'Kz ' }}</strong>
+    </div>
+    <div>
+      <span class="summary-label">Pratos ativos</span>
+      <strong>{{ pratos.length }}</strong>
+    </div>
+    <div>
+      <span class="summary-label">Pedido em aberto</span>
+      <strong>{{ getPedidoAtivo()?.token_pedido || 'Nenhum' }}</strong>
+    </div>
+  </div>
+</div>
+
+<div class="container wallet-strip">
+  <section class="card wallet-card">
+    <div>
+      <span class="eyebrow compact">Carteira digital</span>
+      <h2>Carregar saldo na conta</h2>
+      <p>Escolha um valor rápido ou informe um montante personalizado para continuar a pedir sem interrupções.</p>
+    </div>
+
+    <div class="wallet-actions">
+      <button type="button" class="btn btn-outline" [disabled]="walletLoading" (click)="carregarSaldo(500)">+ 500 Kz</button>
+      <button type="button" class="btn btn-outline" [disabled]="walletLoading" (click)="carregarSaldo(1000)">+ 1.000 Kz</button>
+      <button type="button" class="btn btn-outline" [disabled]="walletLoading" (click)="carregarSaldo(2500)">+ 2.500 Kz</button>
+    </div>
+
+    <div class="wallet-form">
+      <label for="saldoRecarga">Valor personalizado</label>
+      <div class="wallet-input-group">
+        <input id="saldoRecarga" type="number" min="100" step="100" [(ngModel)]="saldoRecarga" placeholder="Ex.: 1500">
+        <button type="button" class="btn btn-primary" [disabled]="walletLoading" (click)="carregarSaldo(saldoRecarga)">
+          {{ walletLoading ? 'A carregar...' : 'Carregar saldo' }}
+        </button>
+      </div>
+      <small>O saldo é atualizado em tempo real no seu perfil local e no backend.</small>
+    </div>
+  </section>
+</div>
+
+<div class="container menu-layout">
+  <section class="menu-panel card">
+    <div class="panel-header">
+      <div>
+        <h2>Cardápio do dia</h2>
+        <p>Filtre por categoria ou pesquise o prato ideal.</p>
+      </div>
+
+      <div class="filters">
+        <input type="search" [(ngModel)]="search" placeholder="Pesquisar prato, descrição ou categoria">
+        <div class="filter-chips">
+          @for (item of categorias; track item) {
+            <button type="button" class="chip" [class.active]="categoria === item" (click)="categoria = item">{{ item }}</button>
+          }
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-grid">
+      @for (prato of pratosFiltrados; track prato.id) {
+        <article class="dish-card" [class.disabled]="!prato.disponivel">
+          <div class="dish-image" [attr.data-cat]="prato.categoria">
+            <span class="badge">{{ prato.categoria }}</span>
+            <span class="status-pill" [class.out]="!prato.disponivel">
+              {{ prato.disponivel ? 'Disponível' : 'Indisponível' }}
+            </span>
+          </div>
+
+          <div class="dish-body">
+            <h3>{{ prato.nome }}</h3>
+            <p>{{ prato.descricao }}</p>
+            <div class="dish-footer">
+              <span class="price">{{ prato.preco | currency:'Kz ' }}</span>
+              <button class="btn btn-primary" [disabled]="loading || !prato.disponivel" (click)="selecionarPrato(prato)">
+                {{ loading ? 'Processando...' : 'Pedir' }}
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <aside class="menu-panel card sidebar">
+    <div class="panel-header compact">
+      <div>
+        <h2>Últimos pedidos</h2>
+        <p>Acompanhe o seu histórico recente.</p>
+      </div>
+    </div>
+
+    <div class="history-list">
+      @for (pedido of historico; track pedido.token_pedido) {
+        <article class="history-item">
+          <div>
+            <strong>{{ pedido.nome }}</strong>
+            <span>#{{ pedido.token_pedido }}</span>
+          </div>
+          <div>
+            <span class="history-status" [attr.data-status]="pedido.status">{{ pedido.status }}</span>
+            <small>{{ pedido.data_pedido | date:'dd/MM HH:mm' }}</small>
+          </div>
+        </article>
+      }
+
+      @if (!historico.length) {
+        <div class="empty-state">
+          <h3>Sem histórico ainda</h3>
+          <p>Depois do primeiro pedido, ele aparece aqui com o respetivo token.</p>
+        </div>
+      }
+    </div>
+
+    <button class="btn btn-outline sidebar-logout" (click)="logout()">Sair da sessão</button>
+  </aside>
+</div>

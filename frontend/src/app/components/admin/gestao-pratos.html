@@ -1,0 +1,140 @@
+<section class="admin-hero container">
+  <div>
+    <span class="eyebrow">Gestão de catálogo</span>
+    <h1>CRUD de pratos operacional</h1>
+    <p>Crie, atualize, desative ou remova pratos com uma visão clara de disponibilidade e volume.</p>
+  </div>
+
+  <div class="admin-metrics card">
+    <div>
+      <span>Total de pratos</span>
+      <strong>{{ pratos.length }}</strong>
+    </div>
+    <div>
+      <span>Disponíveis</span>
+      <strong>{{ pratosDisponiveis }}</strong>
+    </div>
+    <div>
+      <span>Indisponíveis</span>
+      <strong>{{ pratosIndisponiveis }}</strong>
+    </div>
+  </div>
+</section>
+
+<div class="container admin-layout">
+  <section class="card admin-form-card">
+    <div class="card-header">
+      <div>
+        <h2>{{ modoEdicao ? 'Editar prato' : 'Novo prato' }}</h2>
+        <p>Alimente o cardápio com descrições e preços consistentes.</p>
+      </div>
+      <button class="btn btn-outline" type="button" (click)="limpar()">Limpar</button>
+    </div>
+
+    @if (error) {
+      <div class="alert-error">{{ error }}</div>
+    }
+
+    <form class="dish-form" (ngSubmit)="salvar()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="nome">Nome</label>
+          <input id="nome" name="nome" [(ngModel)]="form.nome" required placeholder="Arroz com frango grelhado">
+        </div>
+
+        <div class="form-group">
+          <label for="preco">Preço</label>
+          <input id="preco" name="preco" type="number" step="0.01" [(ngModel)]="form.preco" required>
+        </div>
+
+        <div class="form-group full">
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" name="descricao" [(ngModel)]="form.descricao" rows="4" placeholder="Descreva os ingredientes e o perfil do prato"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="categoria">Categoria</label>
+          <select id="categoria" name="categoria" [(ngModel)]="form.categoria">
+            @for (categoria of categorias; track categoria.value) {
+              <option [value]="categoria.value">{{ categoria.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="imagem_url">Imagem</label>
+          <input id="imagem_url" name="imagem_url" [(ngModel)]="form.imagem_url" placeholder="https://...">
+        </div>
+
+        <label class="toggle full">
+          <input type="checkbox" name="disponivel" [(ngModel)]="form.disponivel">
+          <span>Prato disponível para o menu</span>
+        </label>
+      </div>
+
+      <button class="btn btn-primary submit-button" type="submit" [disabled]="saving">
+        {{ saving ? 'A guardar...' : (modoEdicao ? 'Atualizar prato' : 'Criar prato') }}
+      </button>
+    </form>
+  </section>
+
+  <section class="card admin-list-card">
+    <div class="card-header">
+      <div>
+        <h2>Catálogo</h2>
+        <p>Estado atual do menu com ações rápidas.</p>
+      </div>
+    </div>
+
+    @if (loading) {
+      <div class="empty-state">A carregar pratos...</div>
+    } @else {
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Prato</th>
+              <th>Categoria</th>
+              <th>Preço</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (prato of pratos; track prato.id) {
+              <tr>
+                <td>
+                  <strong>{{ prato.nome }}</strong>
+                  <span>{{ prato.descricao }}</span>
+                </td>
+                <td><span class="category-tag" [attr.data-cat]="prato.categoria">{{ prato.categoria }}</span></td>
+                <td>{{ prato.preco | currency:'Kz ' }}</td>
+                <td>
+                  <span class="status-pill" [class.off]="!prato.disponivel">
+                    {{ prato.disponivel ? 'Ativo' : 'Oculto' }}
+                  </span>
+                </td>
+                <td>
+                  <div class="action-group">
+                    <button class="btn btn-outline" type="button" (click)="editar(prato)">Editar</button>
+                    <button class="btn btn-outline" type="button" (click)="alternarDisponibilidade(prato)">
+                      {{ prato.disponivel ? 'Desativar' : 'Ativar' }}
+                    </button>
+                    <button class="btn btn-primary danger" type="button" (click)="remover(prato)">Remover</button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (!pratos.length) {
+        <div class="empty-state">
+          <h3>Nenhum prato cadastrado</h3>
+          <p>Crie o primeiro prato para começar a operar o menu.</p>
+        </div>
+      }
+    }
+  </section>
+</div>

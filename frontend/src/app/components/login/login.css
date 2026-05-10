@@ -1,0 +1,133 @@
+.login-page {
+  min-height: calc(100vh - 88px);
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem;
+}
+
+.login-hero {
+  padding: 1rem 0 1rem 0.5rem;
+}
+
+.login-hero h1 {
+  margin: 1rem 0;
+  font-size: clamp(2.2rem, 4vw, 4.2rem);
+  line-height: 1.02;
+  max-width: 12ch;
+  color: var(--primary-dark);
+}
+
+.login-hero p {
+  max-width: 56ch;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(243, 112, 33, 0.12);
+  color: var(--secondary);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.hero-points {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.hero-points span {
+  padding: 0.65rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid rgba(29, 78, 137, 0.08);
+  box-shadow: var(--shadow);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 460px;
+  justify-self: end;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 30px 60px rgba(19, 53, 93, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+}
+
+.login-card .logo {
+  width: 4.25rem;
+  height: 4.25rem;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+}
+
+.login-card h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.login-card p {
+  color: var(--text-muted);
+  margin: 0.5rem 0 1.4rem;
+}
+
+.form-group {
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 0.95rem 1rem;
+  border: 1px solid rgba(19, 53, 93, 0.12);
+  border-radius: 0.9rem;
+  background: #fff;
+}
+
+input:focus {
+  outline: 2px solid rgba(243, 112, 33, 0.2);
+  border-color: var(--secondary);
+}
+
+.alert-error {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  background: rgba(214, 48, 49, 0.1);
+  color: var(--danger);
+  font-size: 0.95rem;
+}
+
+.login-button {
+  width: 100%;
+  margin-top: 0.35rem;
+}
+
+@media (max-width: 960px) {
+  .login-page {
+    grid-template-columns: 1fr;
+    padding: 1.25rem;
+  }
+
+  .login-card {
+    justify-self: stretch;
+    max-width: none;
+  }
+}

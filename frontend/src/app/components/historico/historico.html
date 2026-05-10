@@ -1,0 +1,64 @@
+<section class="history-hero container">
+  <div>
+    <span class="eyebrow">Linha do tempo</span>
+    <h1>Histórico dos seus pedidos</h1>
+    <p>Veja os últimos tokens, os estados e a evolução do seu consumo no refeitório.</p>
+  </div>
+
+  <div class="history-metrics card">
+    <div>
+      <span>Total de pedidos</span>
+      <strong>{{ totalPedidos }}</strong>
+    </div>
+    <div>
+      <span>Pedidos em curso</span>
+      <strong>{{ pedidosAtivos }}</strong>
+    </div>
+    <div>
+      <span>Último token</span>
+      <strong>{{ ultimoPedido?.token_pedido || '--' }}</strong>
+    </div>
+  </div>
+</section>
+
+<div class="container history-layout">
+  <section class="card history-panel">
+    <div class="history-toolbar">
+      <div>
+        <h2>Últimos movimentos</h2>
+        <p>O backend traz os seus pedidos mais recentes para acompanhamento.</p>
+      </div>
+      <button type="button" class="btn btn-outline" (click)="voltarMenu()">Voltar ao menu</button>
+    </div>
+
+    @if (loading) {
+      <div class="empty-state">A carregar histórico...</div>
+    } @else {
+      <div class="timeline">
+        @for (pedido of pedidos; track pedido.token_pedido) {
+          <article class="timeline-card">
+            <div class="timeline-top">
+              <div>
+                <span class="timeline-token">#{{ pedido.token_pedido }}</span>
+                <h3>{{ pedido.nome }}</h3>
+              </div>
+              <span class="timeline-status" [attr.data-status]="pedido.status">{{ pedido.status }}</span>
+            </div>
+
+            <div class="timeline-footer">
+              <span>{{ pedido.data_pedido | date:'dd/MM/yyyy HH:mm' }}</span>
+              <span>Pedido registado no sistema</span>
+            </div>
+          </article>
+        }
+      </div>
+
+      @if (!pedidos.length) {
+        <div class="empty-state">
+          <h3>Nenhum pedido encontrado</h3>
+          <p>Faça o primeiro pedido no menu para começar a alimentar o seu histórico.</p>
+        </div>
+      }
+    }
+  </section>
+</div>

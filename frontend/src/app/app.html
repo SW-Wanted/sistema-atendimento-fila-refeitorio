@@ -1,0 +1,31 @@
+<div class="shell" [class.shell--hidden]="!showShell">
+	@if (showShell) {
+		<header class="topbar">
+			<div class="brand-block">
+				<span class="brand-kicker">ISPTEC</span>
+				<div>
+					<h1>{{ title() }}</h1>
+					<p>Pedidos digitais, cozinha em tempo real e gestão operacional.</p>
+				</div>
+			</div>
+
+			<nav class="nav-links">
+				@for (link of visibleLinks; track link.path) {
+					<a [routerLink]="link.path" routerLinkActive="active-link">{{ link.label }}</a>
+				}
+			</nav>
+
+			<div class="user-chip">
+				<div>
+					<strong>{{ user?.nome }}</strong>
+					<span>{{ user?.tipo_conta }}</span>
+				</div>
+				<button class="btn btn-outline btn-small" type="button" (click)="logout()">Sair</button>
+			</div>
+		</header>
+	}
+
+	<main class="shell-content">
+		<router-outlet></router-outlet>
+	</main>
+</div>

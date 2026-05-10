@@ -1,0 +1,64 @@
+<section class="kitchen-hero container">
+  <div>
+    <span class="eyebrow">Painel operacional</span>
+    <h1>Cozinha em tempo real</h1>
+    <p>Pedidos organizados por estado, com prioridade visual para itens atrasados.</p>
+  </div>
+
+  <div class="kitchen-metrics card">
+    <div>
+      <span>Total em fila</span>
+      <strong>{{ pedidos.length }}</strong>
+    </div>
+    <div>
+      <span>Última atualização</span>
+      <strong>{{ updatedAt || '--:--' }}</strong>
+    </div>
+  </div>
+</section>
+
+<div class="container kitchen-layout">
+  <section class="card kitchen-panel">
+    <div class="kitchen-toolbar">
+      <h2>Pedidos ativos</h2>
+      <div class="status-filters">
+        <button class="chip" [class.active]="filtro === 'todos'" (click)="filtro = 'todos'">Todos</button>
+        <button class="chip" [class.active]="filtro === 'recebido'" (click)="filtro = 'recebido'">Recebidos</button>
+        <button class="chip" [class.active]="filtro === 'preparacao'" (click)="filtro = 'preparacao'">Preparação</button>
+        <button class="chip" [class.active]="filtro === 'pronto'" (click)="filtro = 'pronto'">Prontos</button>
+      </div>
+    </div>
+
+    <div class="kitchen-grid">
+      @for (p of pedidosVisiveis; track p.id) {
+        <article class="order-card" [class.ready]="p.status === 'pronto'" [class.warn]="isAtrasado(p.data_pedido)">
+          <div class="order-header">
+            <span class="order-token">#{{ p.token_pedido }}</span>
+            <span class="order-time">{{ p.data_pedido | date:'HH:mm' }}</span>
+          </div>
+          <div class="order-content">
+            <h3>{{ p.prato }}</h3>
+            <p>Cliente: {{ p.cliente }}</p>
+            <span class="status-tag" [attr.data-status]="p.status">{{ p.status }}</span>
+          </div>
+          <div class="order-actions">
+            @if (p.status === 'recebido') {
+              <button class="btn btn-primary" (click)="mudarStatus(p.id, 'preparacao')">Começar Preparo</button>
+            } @else if (p.status === 'preparacao') {
+              <button class="btn btn-success" (click)="mudarStatus(p.id, 'pronto')">Marcar como Pronto</button>
+            } @else if (p.status === 'pronto') {
+              <button class="btn btn-outline" (click)="mudarStatus(p.id, 'retirado')">Confirmar Entrega</button>
+            }
+          </div>
+        </article>
+      }
+    </div>
+
+    @if (!pedidosVisiveis.length && !loading) {
+      <div class="empty-state">
+        <h3>Nenhum pedido ativo</h3>
+        <p>Quando os pedidos chegarem, eles aparecem aqui com prioridade por tempo.</p>
+      </div>
+    }
+  </section>
+</div>

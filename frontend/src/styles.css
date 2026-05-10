@@ -1,0 +1,78 @@
+:root {
+  --primary: #1d4e89;   /* Azul ISPTEC */
+  --primary-dark: #13355d;
+  --secondary: #f37021; /* Laranja Energia */
+  --bg: #f8f9fa;
+  --card-bg: #ffffff;
+  --text-main: #2d3436;
+  --text-muted: #636e72;
+  --success: #00b894;
+  --danger: #d63031;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  margin: 0;
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+}
+
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+.card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(19, 53, 93, 0.08);
+  border-radius: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+/* Botões Profissionais */
+.btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary { background: var(--secondary); color: white; }
+.btn-primary:hover { background: #e66010; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(243, 112, 33, 0.3); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+
+.btn-success { background: var(--success); color: #fff; }
+
+.btn-success:hover { filter: brightness(0.96); transform: translateY(-1px); }
+
+/* Alerts / Badges */
+.badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+input,
+select,
+textarea,
+button {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}

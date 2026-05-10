@@ -1,0 +1,246 @@
+:host {
+  display: block;
+}
+
+.admin-hero {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1.25rem;
+  align-items: stretch;
+  padding-top: 1.25rem;
+}
+
+.admin-hero h1 {
+  margin: 0.75rem 0 1rem;
+  font-size: clamp(2rem, 3vw, 3.1rem);
+  line-height: 1.05;
+  color: var(--primary-dark);
+}
+
+.admin-hero p {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--text-muted);
+}
+
+.eyebrow {
+  display: inline-flex;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(243, 112, 33, 0.12);
+  color: var(--secondary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.admin-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1.15rem;
+}
+
+.admin-metrics span {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-metrics strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 1.25rem;
+}
+
+.admin-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 1.25rem;
+  padding-bottom: 2rem;
+}
+
+.admin-form-card,
+.admin-list-card {
+  padding: 1.4rem;
+  border-radius: 1.4rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.card-header h2 {
+  margin: 0;
+}
+
+.card-header p {
+  margin: 0.25rem 0 0;
+  color: var(--text-muted);
+}
+
+.alert-error {
+  margin-bottom: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: 0.9rem;
+  background: rgba(214, 48, 49, 0.1);
+  color: var(--danger);
+}
+
+.dish-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.form-group {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.form-group.full {
+  grid-column: 1 / -1;
+}
+
+.form-group label,
+.toggle span {
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border-radius: 0.9rem;
+  border: 1px solid rgba(19, 53, 93, 0.12);
+  padding: 0.9rem 1rem;
+  background: #fff;
+  font: inherit;
+}
+
+textarea {
+  resize: vertical;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.9rem;
+  background: rgba(29, 78, 137, 0.05);
+}
+
+.toggle input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.submit-button {
+  width: 100%;
+}
+
+.table-wrapper {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 0.85rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(19, 53, 93, 0.08);
+  vertical-align: top;
+}
+
+td strong,
+td span {
+  display: block;
+}
+
+td span {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+.category-tag,
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.category-tag[data-cat='carne'] { background: rgba(107, 79, 58, 0.14); color: #6b4f3a; }
+.category-tag[data-cat='peixe'] { background: rgba(15, 91, 120, 0.14); color: #0f5b78; }
+.category-tag[data-cat='vegetariano'] { background: rgba(46, 125, 50, 0.14); color: #2e7d32; }
+.category-tag[data-cat='dieta'] { background: rgba(127, 140, 141, 0.14); color: #7f8c8d; }
+
+.status-pill {
+  background: rgba(0, 184, 148, 0.12);
+  color: var(--success);
+}
+
+.status-pill.off {
+  background: rgba(214, 48, 49, 0.12);
+  color: var(--danger);
+}
+
+.action-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.danger {
+  border-color: rgba(214, 48, 49, 0.2);
+}
+
+.empty-state {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: 1rem;
+  background: rgba(29, 78, 137, 0.06);
+}
+
+.empty-state h3 {
+  margin: 0 0 0.35rem;
+}
+
+@media (max-width: 1080px) {
+  .admin-hero,
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 820px) {
+  .form-grid,
+  .admin-metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .card-header {
+    flex-direction: column;
+  }
+}
