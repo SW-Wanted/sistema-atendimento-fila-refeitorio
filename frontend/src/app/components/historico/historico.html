@@ -28,7 +28,10 @@
         <h2>Últimos movimentos</h2>
         <p>O backend traz os seus pedidos mais recentes para acompanhamento.</p>
       </div>
-      <button type="button" class="btn btn-outline" (click)="voltarMenu()">Voltar ao menu</button>
+      <div class="history-actions">
+        <button type="button" class="btn btn-outline" (click)="exportarCsv()" [disabled]="!pedidos.length">Exportar CSV</button>
+        <button type="button" class="btn btn-outline" (click)="voltarMenu()">Voltar ao menu</button>
+      </div>
     </div>
 
     @if (loading) {

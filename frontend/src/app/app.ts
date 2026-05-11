@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
+import { I18nService, Lang } from './services/i18n';
+import { ThemeService } from './services/theme';
 
 @Component({
   selector: 'app-root',
@@ -17,15 +19,19 @@ export class App implements OnInit, OnDestroy {
   protected showShell = false;
 
   protected readonly links = [
-    { label: 'Menu', path: '/menu', roles: ['guest', 'institucional', 'admin', 'operador'] },
-    { label: 'Histórico', path: '/historico', roles: ['guest', 'institucional', 'admin', 'operador'] },
-    { label: 'Cozinha', path: '/cozinha', roles: ['admin', 'operador'] },
-    { label: 'Gestão', path: '/admin/pratos', roles: ['admin'] },
+    { label: 'menu', path: '/menu', roles: ['guest', 'institucional', 'admin', 'operador'] },
+    { label: 'history', path: '/historico', roles: ['guest', 'institucional', 'admin', 'operador'] },
+    { label: 'kitchen', path: '/cozinha', roles: ['admin', 'operador'] },
+    { label: 'management', path: '/admin/pratos', roles: ['admin'] },
   ];
 
   private routerSub?: Subscription;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private i18n: I18nService,
+    private theme: ThemeService,
+  ) {}
 
   ngOnInit() {
     this.syncShellState();
@@ -41,6 +47,26 @@ export class App implements OnInit, OnDestroy {
     return this.links.filter(link => !this.user || link.roles.includes(this.user.tipo_conta));
   }
 
+  get currentTheme() {
+    return this.theme.currentTheme;
+  }
+
+  get currentLang() {
+    return this.i18n.currentLang;
+  }
+
+  toggleTheme() {
+    this.theme.toggleTheme();
+  }
+
+  setLang(lang: string) {
+    this.i18n.setLang(lang as Lang);
+  }
+
+  t(key: string) {
+    return this.i18n.t(key);
+  }
+
   logout() {
     localStorage.removeItem('user');
     this.syncShellState();
@@ -50,6 +76,6 @@ export class App implements OnInit, OnDestroy {
   private syncShellState() {
     const storedUser = localStorage.getItem('user');
     this.user = storedUser ? JSON.parse(storedUser) : null;
-    this.showShell = !!this.user && this.router.url !== '/login';
+    this.showShell = !!this.user && !['/login', '/register', '/recover-password'].includes(this.router.url);
   }
 }

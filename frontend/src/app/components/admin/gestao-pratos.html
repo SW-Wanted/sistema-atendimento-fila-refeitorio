@@ -84,6 +84,7 @@
         <h2>Catálogo</h2>
         <p>Estado atual do menu com ações rápidas.</p>
       </div>
+      <button class="btn btn-outline" type="button" (click)="exportarCsv()" [disabled]="!pratos.length">Exportar CSV</button>
     </div>
 
     @if (loading) {

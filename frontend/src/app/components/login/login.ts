@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; // Necessário para o ngModel
 import { ApiService } from '../../services/api';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Importar aqui
+  imports: [CommonModule, FormsModule, RouterLink], // Importar aqui
   templateUrl: './login.html',
   styleUrl: './login.css'
 })

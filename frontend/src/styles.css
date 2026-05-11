@@ -11,14 +11,28 @@
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+[data-theme='dark'] {
+  --primary: #5ea3ff;
+  --primary-dark: #d9e8ff;
+  --secondary: #ff9859;
+  --bg: #0f1725;
+  --card-bg: #182335;
+  --text-main: #e8edf5;
+  --text-muted: #a8b5c8;
+  --success: #26cfa6;
+  --danger: #ff7b7b;
+  --shadow: 0 10px 28px rgba(0, 0, 0, 0.42);
+}
+
 * { box-sizing: border-box; }
 
 body {
-  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
   background-color: var(--bg);
   color: var(--text-main);
   margin: 0;
   line-height: 1.6;
+  transition: background-color 180ms ease, color 180ms ease;
 }
 
 a {
@@ -28,7 +42,7 @@ a {
 .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
 .card {
-  background: rgba(255, 255, 255, 0.9);
+  background: color-mix(in srgb, var(--card-bg) 90%, transparent);
   border: 1px solid rgba(19, 53, 93, 0.08);
   border-radius: 1.25rem;
   box-shadow: var(--shadow);

@@ -36,5 +36,10 @@
     <button class="btn-primary login-button" [disabled]="loading" (click)="fazerLogin()">
       {{ loading ? 'A entrar...' : 'Entrar' }}
     </button>
+
+    <div class="auth-links">
+      <a routerLink="/register">Criar conta</a>
+      <a routerLink="/recover-password">Esqueci a senha</a>
+    </div>
   </section>
 </div>

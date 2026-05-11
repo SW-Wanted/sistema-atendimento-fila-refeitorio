@@ -20,6 +20,13 @@
       <span class="summary-label">Pedido em aberto</span>
       <strong>{{ getPedidoAtivo()?.token_pedido || 'Nenhum' }}</strong>
     </div>
+    <div>
+      <span class="summary-label">Clima em Luanda</span>
+      <strong>
+        {{ temperaturaAtual !== undefined ? (temperaturaAtual + '°C') : '--' }}
+        <small>{{ climaDescricao }}</small>
+      </strong>
+    </div>
   </div>
 </div>
 

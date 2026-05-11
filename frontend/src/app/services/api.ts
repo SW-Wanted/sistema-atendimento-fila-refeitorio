@@ -13,6 +13,13 @@ export interface PratoPayload {
   imagem_url?: string | null;
 }
 
+export interface WeatherResponse {
+  current?: {
+    temperature_2m?: number;
+    weather_code?: number;
+  };
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private baseUrl = 'http://localhost:8000';
@@ -30,6 +37,10 @@ export class ApiService {
 
   register(payload: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/auth/register.php`, payload).pipe(catchError(this.handleError));
+  }
+
+  recoverPassword(payload: { email: string; nova_senha: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/auth/recover_password.php`, payload).pipe(catchError(this.handleError));
   }
 
   getPratos(): Observable<any[]> {
@@ -86,5 +97,10 @@ export class ApiService {
 
   getHistoricoPedidos(utilizadorId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/pedidos/historico.php?utilizador_id=${utilizadorId}`).pipe(catchError(this.handleError));
+  }
+
+  getWeatherLuanda(): Observable<WeatherResponse> {
+    return this.http.get<WeatherResponse>('https://api.open-meteo.com/v1/forecast?latitude=-8.83&longitude=13.24&current=temperature_2m,weather_code')
+      .pipe(catchError(this.handleError));
   }
 }

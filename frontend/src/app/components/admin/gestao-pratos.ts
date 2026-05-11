@@ -137,4 +137,39 @@ export class GestaoPratos implements OnInit {
   get pratosIndisponiveis() {
     return this.pratos.filter(prato => !prato.disponivel).length;
   }
+
+  exportarCsv() {
+    const headers = ['id', 'nome', 'categoria', 'preco', 'disponivel'];
+    const rows = this.pratos.map((prato) => [
+      prato.id,
+      prato.nome,
+      prato.categoria,
+      prato.preco,
+      prato.disponivel ? 'sim' : 'nao'
+    ]);
+
+    const statsRows = [
+      [],
+      ['metrica', 'valor'],
+      ['total_pratos', this.pratos.length],
+      ['disponiveis', this.pratosDisponiveis],
+      ['indisponiveis', this.pratosIndisponiveis],
+    ];
+
+    const csv = [headers, ...rows, ...statsRows]
+      .map((line) => line.map((item) => `"${String(item ?? '').replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', `relatorio_pratos_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
 }

@@ -21,6 +21,8 @@ export class Menu implements OnInit {
   categoria = 'todas';
   saldoRecarga = 500;
   categorias = ['todas', 'carne', 'peixe', 'vegetariano', 'dieta'];
+  temperaturaAtual?: number;
+  climaDescricao = '';
 
   constructor(private api: ApiService, private cdr: ChangeDetectorRef, private router: Router) {}
 
@@ -33,6 +35,7 @@ export class Menu implements OnInit {
     this.user = JSON.parse(storedUser);
     this.carregarPratos();
     this.carregarHistorico();
+    this.carregarClima();
   }
 
   carregarPratos() {
@@ -47,6 +50,44 @@ export class Menu implements OnInit {
       next: (res) => { this.historico = res; this.cdr.detectChanges(); },
       error: () => { this.historico = []; }
     });
+  }
+
+  carregarClima() {
+    this.api.getWeatherLuanda().subscribe({
+      next: (res) => {
+        this.temperaturaAtual = res.current?.temperature_2m;
+        this.climaDescricao = this.getWeatherDescription(res.current?.weather_code);
+      },
+      error: () => {
+        this.temperaturaAtual = undefined;
+        this.climaDescricao = 'Indisponível';
+      }
+    });
+  }
+
+  private getWeatherDescription(code?: number): string {
+    const map: Record<number, string> = {
+      0: 'Céu limpo',
+      1: 'Poucas nuvens',
+      2: 'Parcialmente nublado',
+      3: 'Nublado',
+      45: 'Nevoeiro',
+      48: 'Nevoeiro denso',
+      51: 'Garoa leve',
+      61: 'Chuva leve',
+      63: 'Chuva moderada',
+      65: 'Chuva forte',
+      80: 'Pancadas leves',
+      81: 'Pancadas moderadas',
+      82: 'Pancadas fortes',
+      95: 'Trovoada'
+    };
+
+    if (code === undefined) {
+      return 'Sem dados';
+    }
+
+    return map[code] || 'Condição variável';
   }
 
   selecionarPrato(prato: any) {

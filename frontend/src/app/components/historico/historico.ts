@@ -57,4 +57,34 @@ export class Historico implements OnInit {
   voltarMenu() {
     this.router.navigate(['/menu']);
   }
+
+  exportarCsv() {
+    if (!this.pedidos.length) {
+      return;
+    }
+
+    const headers = ['token_pedido', 'prato', 'status', 'data_pedido'];
+    const rows = this.pedidos.map((pedido) => [
+      pedido.token_pedido,
+      pedido.nome,
+      pedido.status,
+      pedido.data_pedido,
+    ]);
+
+    const csv = [headers, ...rows]
+      .map((line) => line.map((item) => `"${String(item ?? '').replace(/"/g, '""')}"`).join(','))
+      .join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+
+    link.setAttribute('href', url);
+    link.setAttribute('download', `historico_pedidos_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
 }
