@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService, PratoPayload } from '../../services/api';
+import { FeedbackService } from '../../services/feedback';
 
 @Component({
   selector: 'app-gestao-pratos',
@@ -17,6 +18,8 @@ export class GestaoPratos implements OnInit {
   saving = false;
   error = '';
   modoEdicao = false;
+  previewImagem = '';
+  pratoParaRemover: any = null;
 
   form: PratoPayload = {
     nome: '',
@@ -34,7 +37,7 @@ export class GestaoPratos implements OnInit {
     { value: 'dieta', label: 'Dieta' }
   ];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private feedback: FeedbackService) {}
 
   ngOnInit() {
     this.carregarDados();
@@ -79,10 +82,11 @@ export class GestaoPratos implements OnInit {
         this.saving = false;
         this.limpar();
         this.carregarDados();
+        this.feedback.success('Prato guardado', 'O prato foi criado ou atualizado com sucesso.');
       },
       error: (err) => {
         this.saving = false;
-        this.error = err.message || 'Não foi possível guardar o prato.';
+        this.feedback.error('Falha ao guardar prato', err.message || 'Não foi possível guardar o prato.');
       }
     });
   }
@@ -98,6 +102,7 @@ export class GestaoPratos implements OnInit {
       disponivel: !!prato.disponivel,
       imagem_url: prato.imagem_url || ''
     };
+    this.previewImagem = prato.imagem_url || '';
   }
 
   limpar() {
@@ -110,24 +115,65 @@ export class GestaoPratos implements OnInit {
       disponivel: true,
       imagem_url: ''
     };
+    this.previewImagem = '';
   }
 
   alternarDisponibilidade(prato: any) {
     this.api.alternarDisponibilidade(prato.id, !prato.disponivel).subscribe({
-      next: () => this.carregarDados(),
-      error: (err) => this.error = err.message || 'Não foi possível atualizar a disponibilidade.'
+      next: () => {
+        this.carregarDados();
+        this.feedback.info('Disponibilidade atualizada', `O prato ${prato.nome} foi ${prato.disponivel ? 'desativado' : 'ativado'}.`);
+      },
+      error: (err) => this.feedback.error('Falha ao atualizar disponibilidade', err.message || 'Não foi possível atualizar a disponibilidade.')
     });
   }
 
   remover(prato: any) {
-    if (!confirm(`Remover ${prato.nome}? Esta ação não pode ser desfeita.`)) {
+    this.pratoParaRemover = prato;
+  }
+
+  cancelarRemocao() {
+    this.pratoParaRemover = null;
+  }
+
+  confirmarRemocao() {
+    const prato = this.pratoParaRemover;
+
+    if (!prato) {
       return;
     }
 
     this.api.excluirPrato(prato.id).subscribe({
-      next: () => this.carregarDados(),
-      error: (err) => this.error = err.message || 'Não foi possível remover o prato.'
+      next: () => {
+        this.carregarDados();
+        this.feedback.success('Prato removido', `${prato.nome} foi removido do catálogo.`);
+        this.pratoParaRemover = null;
+      },
+      error: (err) => this.feedback.error('Falha ao remover prato', err.message || 'Não foi possível remover o prato.')
     });
+  }
+
+  onImagemSelecionada(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      this.feedback.error('Ficheiro inválido', 'Selecione uma imagem válida.');
+      input.value = '';
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = String(reader.result || '');
+      this.form.imagem_url = result;
+      this.previewImagem = result;
+    };
+    reader.readAsDataURL(file);
   }
 
   get pratosDisponiveis() {

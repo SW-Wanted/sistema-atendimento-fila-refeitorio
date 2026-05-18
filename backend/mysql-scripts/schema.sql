@@ -20,7 +20,7 @@ CREATE TABLE pratos (
     preco DECIMAL(10, 2) NOT NULL,
     categoria ENUM('carne', 'peixe', 'vegetariano', 'dieta') NOT NULL,
     disponivel BOOLEAN DEFAULT TRUE,
-    imagem_url VARCHAR(255)
+    imagem_url MEDIUMTEXT
 );
 
 -- 3. Tabela de Pedidos (A ligação entre Utilizador e Prato)

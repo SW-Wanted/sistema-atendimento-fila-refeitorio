@@ -38,4 +38,24 @@
 	<main class="shell-content">
 		<router-outlet></router-outlet>
 	</main>
+
+	@if (feedback.state()) {
+		<div class="feedback-backdrop" (click)="closeFeedback()">
+			<section class="feedback-modal card" (click)="$event.stopPropagation()" [attr.data-type]="feedback.state()?.type">
+				<div class="feedback-head">
+					<div>
+						<span class="feedback-kicker">{{ feedback.state()?.type }}</span>
+						<h2>{{ feedback.state()?.title }}</h2>
+					</div>
+					<button type="button" class="feedback-close" (click)="closeFeedback()" aria-label="Fechar">×</button>
+				</div>
+
+				<p>{{ feedback.state()?.message }}</p>
+
+				<div class="feedback-actions">
+					<button type="button" class="btn btn-primary" (click)="closeFeedback()">Fechar</button>
+				</div>
+			</section>
+		</div>
+	}
 </div>

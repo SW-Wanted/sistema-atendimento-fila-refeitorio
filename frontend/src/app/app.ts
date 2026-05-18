@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { I18nService, Lang } from './services/i18n';
+import { FeedbackService } from './services/feedback';
 import { ThemeService } from './services/theme';
 
 @Component({
@@ -31,6 +32,7 @@ export class App implements OnInit, OnDestroy {
     private router: Router,
     private i18n: I18nService,
     private theme: ThemeService,
+    protected readonly feedback: FeedbackService,
   ) {}
 
   ngOnInit() {
@@ -71,6 +73,10 @@ export class App implements OnInit, OnDestroy {
     localStorage.removeItem('user');
     this.syncShellState();
     this.router.navigate(['/login']);
+  }
+
+  closeFeedback() {
+    this.feedback.close();
   }
 
   private syncShellState() {

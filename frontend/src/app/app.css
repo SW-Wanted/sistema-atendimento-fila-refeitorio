@@ -1,13 +1,13 @@
 .shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(243, 112, 33, 0.16), transparent 34%),
-    radial-gradient(circle at right 20%, rgba(29, 78, 137, 0.12), transparent 28%),
-    linear-gradient(180deg, #f9fafb 0%, #eef3f9 100%);
+    radial-gradient(circle at top left, color-mix(in srgb, var(--secondary) 24%, transparent), transparent 34%),
+    radial-gradient(circle at right 20%, color-mix(in srgb, var(--primary) 22%, transparent), transparent 30%),
+    linear-gradient(180deg, var(--bg-layer-1) 0%, var(--bg) 52%, var(--bg-layer-2) 100%);
 }
 
 .shell--hidden {
-  background: linear-gradient(180deg, #f9fafb 0%, #eef3f9 100%);
+  background: linear-gradient(180deg, var(--bg-layer-1) 0%, var(--bg) 54%, var(--bg-layer-2) 100%);
 }
 
 .topbar {
@@ -20,8 +20,8 @@
   top: 0;
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: rgba(249, 250, 251, 0.86);
-  border-bottom: 1px solid rgba(19, 53, 93, 0.08);
+  background: color-mix(in srgb, var(--card-bg) 84%, transparent);
+  border-bottom: 1px solid var(--line);
 }
 
 .brand-block {
@@ -47,8 +47,8 @@
   justify-content: center;
   width: 3rem;
   height: 3rem;
-  border-radius: 1rem;
-  background: linear-gradient(135deg, var(--primary), #2d7bd6);
+  border-radius: 0.9rem;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary));
   color: #fff;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -67,14 +67,14 @@
   font-weight: 600;
   padding: 0.7rem 1rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(19, 53, 93, 0.08);
+  background: color-mix(in srgb, var(--card-bg-soft) 90%, transparent);
+  border: 1px solid var(--line);
 }
 
 .nav-links a.active-link {
-  background: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: #fff;
-  box-shadow: 0 10px 20px rgba(29, 78, 137, 0.18);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--primary) 40%, transparent);
 }
 
 .user-chip {
@@ -83,8 +83,8 @@
   gap: 1rem;
   padding: 0.8rem 1rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.84);
-  border: 1px solid rgba(19, 53, 93, 0.08);
+  background: color-mix(in srgb, var(--card-bg-soft) 90%, transparent);
+  border: 1px solid var(--line);
 }
 
 .user-chip strong,
@@ -106,7 +106,7 @@
 
 .toolbar-controls select {
   border-radius: 0.65rem;
-  border: 1px solid rgba(19, 53, 93, 0.16);
+  border: 1px solid var(--line);
   padding: 0.45rem 0.6rem;
   background: var(--card-bg);
   color: var(--text-main);
@@ -131,4 +131,80 @@
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+.feedback-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+  background: rgba(6, 12, 20, 0.58);
+  backdrop-filter: blur(10px);
+}
+
+.feedback-modal {
+  width: min(100%, 520px);
+  padding: 1.4rem;
+  border-radius: 1.35rem;
+  background: color-mix(in srgb, var(--card-bg) 96%, transparent);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-hard);
+}
+
+.feedback-modal[data-type='success'] {
+  border-color: color-mix(in srgb, var(--success) 45%, var(--line));
+}
+
+.feedback-modal[data-type='error'] {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--line));
+}
+
+.feedback-modal[data-type='warning'] {
+  border-color: color-mix(in srgb, var(--secondary) 45%, var(--line));
+}
+
+.feedback-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.feedback-kicker {
+  display: inline-flex;
+  margin-bottom: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
+  color: var(--primary-dark);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.feedback-modal h2 {
+  margin: 0;
+}
+
+.feedback-modal p {
+  margin: 1rem 0 0;
+  color: var(--text-muted);
+}
+
+.feedback-close {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card-bg-soft) 88%, transparent);
+  border: 1px solid var(--line);
+  color: var(--text-main);
+  cursor: pointer;
+}
+
+.feedback-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.25rem;
 }

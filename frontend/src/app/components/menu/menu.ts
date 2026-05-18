@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api';
+import { FeedbackService } from '../../services/feedback';
 import { Router } from '@angular/router';
 
 @Component({
@@ -23,8 +24,9 @@ export class Menu implements OnInit {
   categorias = ['todas', 'carne', 'peixe', 'vegetariano', 'dieta'];
   temperaturaAtual?: number;
   climaDescricao = '';
+  pratoPendente: any = null;
 
-  constructor(private api: ApiService, private cdr: ChangeDetectorRef, private router: Router) {}
+  constructor(private api: ApiService, private cdr: ChangeDetectorRef, private router: Router, private feedback: FeedbackService) {}
 
   ngOnInit() {
     const storedUser = localStorage.getItem('user');
@@ -41,7 +43,7 @@ export class Menu implements OnInit {
   carregarPratos() {
     this.api.getPratos().subscribe({
       next: (res) => { this.pratos = res; this.cdr.detectChanges(); },
-      error: (err) => alert(err.message)
+      error: (err) => this.feedback.error('Falha ao carregar menu', err.message)
     });
   }
 
@@ -91,24 +93,39 @@ export class Menu implements OnInit {
   }
 
   selecionarPrato(prato: any) {
-    if (this.loading) return;
-    
-    if (confirm(`Confirmar pedido de ${prato.nome} por ${prato.preco} Kz?`)) {
-      this.loading = true;
-      this.api.criarPedido({ utilizador_id: this.user.id, prato_id: prato.id }).subscribe({
-        next: (res) => {
-          alert(`SUCESSO!\nToken: ${res.token}\nRetire o seu prato quando for notificado.`);
-          this.user.saldo = res.novo_saldo;
-          localStorage.setItem('user', JSON.stringify(this.user));
-          this.loading = false;
-          this.cdr.detectChanges();
-        },
-        error: (err) => {
-          alert(err.message);
-          this.loading = false;
-        }
-      });
+    if (this.loading || !prato.disponivel) {
+      return;
     }
+
+    this.pratoPendente = prato;
+  }
+
+  cancelarPedido() {
+    this.pratoPendente = null;
+  }
+
+  confirmarPedido() {
+    const prato = this.pratoPendente;
+
+    if (!prato || this.loading) {
+      return;
+    }
+
+    this.loading = true;
+    this.api.criarPedido({ utilizador_id: this.user.id, prato_id: prato.id }).subscribe({
+      next: (res) => {
+        this.user.saldo = res.novo_saldo;
+        localStorage.setItem('user', JSON.stringify(this.user));
+        this.loading = false;
+        this.pratoPendente = null;
+        this.cdr.detectChanges();
+        this.feedback.success('Pedido realizado', `Token ${res.token}. O seu saldo foi atualizado para ${res.novo_saldo} Kz.`);
+      },
+      error: (err) => {
+        this.feedback.error('Não foi possível pedir', err.message);
+        this.loading = false;
+      }
+    });
   }
 
   carregarSaldo(valor: number) {
@@ -121,11 +138,11 @@ export class Menu implements OnInit {
         localStorage.setItem('user', JSON.stringify(this.user));
         this.walletLoading = false;
         this.cdr.detectChanges();
-        alert(`Saldo atualizado com sucesso. Novo saldo: ${res.novo_saldo} Kz`);
+        this.feedback.success('Saldo carregado', `Novo saldo: ${res.novo_saldo} Kz`);
       },
       error: (err) => {
         this.walletLoading = false;
-        alert(err.message || 'Não foi possível carregar o saldo.');
+        this.feedback.error('Falha ao carregar saldo', err.message || 'Não foi possível carregar o saldo.');
       }
     });
   }

@@ -27,7 +27,7 @@
   display: inline-flex;
   padding: 0.4rem 0.8rem;
   border-radius: 999px;
-  background: rgba(29, 78, 137, 0.1);
+  background: color-mix(in srgb, var(--primary) 18%, transparent);
   color: var(--primary);
   font-size: 0.76rem;
   font-weight: 800;
@@ -95,8 +95,8 @@
 .timeline-card {
   padding: 1rem 1.05rem;
   border-radius: 1rem;
-  border: 1px solid rgba(19, 53, 93, 0.08);
-  background: linear-gradient(180deg, #fff, #f9fbff);
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card-bg) 96%, transparent), color-mix(in srgb, var(--card-bg-soft) 80%, transparent));
 }
 
 .timeline-top,
@@ -145,7 +145,7 @@
   margin-top: 1rem;
   padding: 1rem 1.1rem;
   border-radius: 1rem;
-  background: rgba(29, 78, 137, 0.06);
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
 }
 
 .empty-state h3 {

@@ -9,7 +9,12 @@ export class ThemeService {
 
   constructor() {
     const saved = localStorage.getItem(this.storageKey) as ThemeMode | null;
-    this.mode = saved === 'dark' ? 'dark' : 'light';
+    if (saved === 'dark' || saved === 'light') {
+      this.mode = saved;
+    } else {
+      this.mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      localStorage.setItem(this.storageKey, this.mode);
+    }
     this.applyTheme();
   }
 
@@ -25,5 +30,6 @@ export class ThemeService {
 
   private applyTheme() {
     document.documentElement.setAttribute('data-theme', this.mode);
+    document.documentElement.style.colorScheme = this.mode;
   }
 }

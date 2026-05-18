@@ -63,20 +63,20 @@ Projeto do Lab04 (ES2) com frontend em Angular, backend em PHP puro e base de da
 ## Endpoints principais
 
 - Autenticação:
-	- `POST /auth/login.php`
-	- `POST /auth/register.php`
-	- `POST /auth/recover_password.php`
+	- `POST /api/auth/login.php`
+	- `POST /api/auth/register.php`
+	- `POST /api/auth/recover_password.php`
 - Menu e pedidos:
-	- `GET /menu/get_pratos.php`
-	- `POST /pedidos/criar.php`
-	- `GET /pedidos/historico.php?utilizador_id={id}`
-	- `GET /pedidos/listar_cozinha.php`
-	- `POST /pedidos/atualizar_status.php`
+	- `GET /api/menu/get_pratos.php`
+	- `POST /api/pedidos/criar.php`
+	- `GET /api/pedidos/historico.php?utilizador_id={id}`
+	- `GET /api/pedidos/listar_cozinha.php`
+	- `POST /api/pedidos/atualizar_status.php`
 - Administração:
-	- `GET|POST|PUT|PATCH|DELETE /admin/gestao_pratos.php`
-	- `GET /admin/stats.php`
+	- `GET|POST|PUT|PATCH|DELETE /api/admin/gestao_pratos.php`
+	- `GET /api/admin/stats.php`
 - Utilizador:
-	- `POST /utilizadores/carregar_saldo.php`
+	- `POST /api/utilizadores/carregar_saldo.php`
 
 ## Notas técnicas
 

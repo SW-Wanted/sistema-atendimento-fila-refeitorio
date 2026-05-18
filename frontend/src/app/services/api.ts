@@ -22,7 +22,7 @@ export interface WeatherResponse {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private baseUrl = 'http://localhost:8000';
+  private baseUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 

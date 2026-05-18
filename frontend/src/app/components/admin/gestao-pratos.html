@@ -63,8 +63,16 @@
 
         <div class="form-group">
           <label for="imagem_url">Imagem</label>
-          <input id="imagem_url" name="imagem_url" [(ngModel)]="form.imagem_url" placeholder="https://...">
+          <input id="imagem_url" type="file" accept="image/*" (change)="onImagemSelecionada($event)">
+          <small>Carregue uma imagem local. Ela será enviada como preview/base64 no prato.</small>
         </div>
+
+        @if (previewImagem) {
+          <div class="form-group full image-preview">
+            <span>Pré-visualização</span>
+            <img [src]="previewImagem" alt="Pré-visualização do prato">
+          </div>
+        }
 
         <label class="toggle full">
           <input type="checkbox" name="disponivel" [(ngModel)]="form.disponivel">
@@ -139,3 +147,17 @@
     }
   </section>
 </div>
+
+@if (pratoParaRemover) {
+  <div class="confirm-backdrop" (click)="cancelarRemocao()">
+    <section class="confirm-modal card" (click)="$event.stopPropagation()">
+      <span class="confirm-kicker">Eliminar prato</span>
+      <h3>Remover {{ pratoParaRemover.nome }}?</h3>
+      <p>Esta ação não pode ser desfeita.</p>
+      <div class="confirm-actions">
+        <button type="button" class="btn btn-outline" (click)="cancelarRemocao()">Cancelar</button>
+        <button type="button" class="btn btn-primary danger" (click)="confirmarRemocao()">Remover</button>
+      </div>
+    </section>
+  </div>
+}

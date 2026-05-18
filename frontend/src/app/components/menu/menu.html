@@ -79,6 +79,14 @@
       @for (prato of pratosFiltrados; track prato.id) {
         <article class="dish-card" [class.disabled]="!prato.disponivel">
           <div class="dish-image" [attr.data-cat]="prato.categoria">
+            @if (prato.imagem_url) {
+              <img class="dish-photo" [src]="prato.imagem_url" [alt]="prato.nome">
+            } @else {
+              <div class="dish-fallback">
+                <span>{{ prato.categoria }}</span>
+                <strong>{{ prato.nome }}</strong>
+              </div>
+            }
             <span class="badge">{{ prato.categoria }}</span>
             <span class="status-pill" [class.out]="!prato.disponivel">
               {{ prato.disponivel ? 'Disponível' : 'Indisponível' }}
@@ -133,3 +141,19 @@
     <button class="btn btn-outline sidebar-logout" (click)="logout()">Sair da sessão</button>
   </aside>
 </div>
+
+@if (pratoPendente) {
+  <div class="confirm-backdrop" (click)="cancelarPedido()">
+    <section class="confirm-modal card" (click)="$event.stopPropagation()">
+      <span class="confirm-kicker">Confirmar pedido</span>
+      <h3>{{ pratoPendente.nome }}</h3>
+      <p>Deseja pedir este prato por {{ pratoPendente.preco | currency:'Kz ' }}?</p>
+      <div class="confirm-actions">
+        <button type="button" class="btn btn-outline" (click)="cancelarPedido()">Cancelar</button>
+        <button type="button" class="btn btn-primary" [disabled]="loading" (click)="confirmarPedido()">
+          {{ loading ? 'A processar...' : 'Confirmar pedido' }}
+        </button>
+      </div>
+    </section>
+  </div>
+}
